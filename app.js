@@ -3,6 +3,7 @@ let express = require('express');
 let path = require('path');
 let cookieParser = require('cookie-parser');
 let logger = require('morgan');
+const proxy = require('express-http-proxy')
 
 let app = express();
 
@@ -23,19 +24,31 @@ app.get('/bilbilak', function (req, res, next) {
   return res.redirect(`https://${subdomain}.${domain}/${id}/${uuid}/${name ? `#${name}` : ''}`)
 });
 
+
+app.get('/bilbilak-proxy', function (req, res, next) {
+  return proxy(`https://${subdomain}.${domain}`, {
+    proxyReqPathResolver: req => {
+      const {id, uuid, name} = req.query
+      return `${id}/${uuid}/${name ? `#${name}` : ''}`
+    }
+  })
+})
+
+
 app.post('/get-bilbilak-url', function (req, res) {
   const {url} = req.body
   try {
     const fullCurrentUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
     const parsedCurrentUrl = new URL(fullCurrentUrl)
-    const {pathname:pathnameOfGivenUrl} = new URL(url)
-    const [id,uuid] = pathnameOfGivenUrl.split('/').filter(el => el.length > 0)
-    res.send(`${parsedCurrentUrl.origin.replace('http','https')}/bilbilak?id=${id}&uuid=${uuid}`)
+    const {pathname: pathnameOfGivenUrl} = new URL(url)
+    const [id, uuid] = pathnameOfGivenUrl.split('/').filter(el => el.length > 0)
+    res.send(`${parsedCurrentUrl.origin.replace('http', 'https')}/bilbilak?id=${id}&uuid=${uuid}`)
   } catch (e) {
     res.status(500).send('error!')
   }
   
 })
+
 
 app.get('/', function (req, res, next) {
   res.send('Hello World')
