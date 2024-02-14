@@ -28,13 +28,12 @@ app.post('/get-bilbilak-url', function (req, res) {
   try {
     const fullCurrentUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
     const parsedCurrentUrl = new URL(fullCurrentUrl)
-    const {pathname:pathnameOfGivenUrl} = new URL(url)
-    const [id,uuid] = pathnameOfGivenUrl.split('/').filter(el => el.length > 0)
-    res.send(`${parsedCurrentUrl.origin.replace('http','https')}/bilbilak?id=${id}&uuid=${uuid}`)
+    const {pathname: pathnameOfGivenUrl} = new URL(url)
+    const [id, uuid] = pathnameOfGivenUrl.split('/').filter(el => el.length > 0)
+    res.send(`${parsedCurrentUrl.origin.replace('http', 'https')}/bilbilak?id=${id}&uuid=${uuid}`)
   } catch (e) {
     res.status(500).send('error!')
   }
-  
 })
 
 app.get('/', function (req, res, next) {
