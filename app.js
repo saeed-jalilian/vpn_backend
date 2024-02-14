@@ -4,23 +4,24 @@ let path = require('path');
 let cookieParser = require('cookie-parser');
 let logger = require('morgan');
 
-let indexRouter = require('./routes/index');
-let bilbilakRouter = require('./routes/bilbilak');
-
 let app = express();
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'pug');
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/bilbilak', bilbilakRouter);
+const domain = 'saeed-jalilian.lol'
+const subdomain = 'jln'
+
+app.get('/bilbilak', function (req, res, next) {
+  const {id, uuid, name} = req.query
+  if (!id || !uuid) {
+    return res.status(500).send('id & uuid is required!')
+  }
+  return res.redirect(`https://${subdomain}.${domain}/${id}/${uuid}/${name ? `#${name}` : ''}`)
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
