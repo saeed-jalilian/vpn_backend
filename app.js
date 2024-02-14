@@ -12,7 +12,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-const domain = 'saeed-jalilian.lol'
+const domain = 'jalilian-saeed.top'
 const subdomain = 'jln'
 
 app.get('/bilbilak', function (req, res, next) {
