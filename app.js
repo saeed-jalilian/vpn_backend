@@ -25,14 +25,12 @@ app.get('/bilbilak', function (req, res, next) {
 });
 
 
-app.get('/bilbilak-proxy', function (req, res, next) {
-  return proxy(`https://${subdomain}.${domain}`, {
-    proxyReqPathResolver: req => {
-      const {id, uuid, name} = req.query
-      return `${id}/${uuid}/${name ? `#${name}` : ''}`
-    }
-  })
-})
+app.get('/bilbilak-proxy', proxy(`https://${subdomain}.${domain}`, {
+  proxyReqPathResolver: req => {
+    const {id, uuid, name} = req.query
+    return `${id}/${uuid}/${name ? `#${name}` : ''}`
+  }
+}))
 
 
 app.post('/get-bilbilak-url', function (req, res) {
