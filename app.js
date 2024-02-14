@@ -23,6 +23,10 @@ app.get('/bilbilak', function (req, res, next) {
   return res.redirect(`https://${subdomain}.${domain}/${id}/${uuid}/${name ? `#${name}` : ''}`)
 });
 
+app.get('/',function(req,res,next){
+  res.send('Hello World')
+})
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
