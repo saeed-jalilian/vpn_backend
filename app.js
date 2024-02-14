@@ -30,7 +30,7 @@ app.post('/get-bilbilak-url', function (req, res) {
     const parsedCurrentUrl = new URL(fullCurrentUrl)
     const {pathname:pathnameOfGivenUrl} = new URL(url)
     const [id,uuid] = pathnameOfGivenUrl.split('/').filter(el => el.length > 0)
-    res.send(`${parsedCurrentUrl.origin}/bilbilak?id=${id}&uuid=${uuid}`)
+    res.send(`${parsedCurrentUrl.origin.replace('http','https')}/bilbilak?id=${id}&uuid=${uuid}`)
   } catch (e) {
     res.status(500).send('error!')
   }
